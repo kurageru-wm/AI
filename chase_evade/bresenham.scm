@@ -15,9 +15,7 @@
                   (ylist '()))
          ;; (print n1 ":" e)
          (if (= n1 e)
-             (values
-              (reverse (cons n1 xlist))
-              (reverse (cons n2 ylist)))
+             (reverse (map cons (cons n1 xlist) (cons n2 ylist)))
              (loop
               (if (>= frac 0) (+ d2 (- frac d1)) (+ frac d2))
               (+ n1 s1)
@@ -33,11 +31,10 @@
         (deltay (* (abs (- endy starty)) 2)))
     (if (> deltax deltay)
         (tmp startx starty deltax deltay nextx nexty stepx stepy endx)
-        (call-with-values
-            (lambda () (tmp starty startx deltay deltax nexty nextx stepy stepx endy))
-          (lambda (x y) (values y x))))
-          
+        (map (lambda (x) (cons (cdr x) (car x)))
+             (tmp starty startx deltay deltax nexty nextx stepy stepx endy)))))
     ))
+
 ;; (bresenham 13 17 15 10)
 ;; (bresenham 3 7 5 0)
 ;; (bresenham 10 10 13 5)
