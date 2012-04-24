@@ -32,8 +32,7 @@
     (if (> deltax deltay)
         (tmp startx starty deltax deltay nextx nexty stepx stepy endx)
         (map (lambda (x) (cons (cdr x) (car x)))
-             (tmp starty startx deltay deltax nexty nextx stepy stepx endy)))))
-    ))
+             (tmp starty startx deltay deltax nexty nextx stepy stepx endy)))))    
 
 ;; (bresenham 13 17 15 10)
 ;; (bresenham 3 7 5 0)
@@ -50,4 +49,4 @@
 ;; (bresenham 44 20 10 14)
 
 
-(provide "case_evade/bresenham")
+(provide "chase_evade/bresenham")

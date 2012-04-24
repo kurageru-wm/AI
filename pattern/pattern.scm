@@ -16,12 +16,33 @@
    (offset :init-value '(0 . 0)
            :accessor offset-of)))
 
+
+;; (load-pattern "Sample")
+
+;; Sample
+;; ((0 . 0) (4 . 10))
+;; ((4 . 10) (15 . 3))
+;; ((15 . 3) (0 . 0))
+(define (load-pattern file)
+  (let1 p (make <pattern>)
+        (with-input-from-file file
+          (lambda () (port-for-each
+                      (lambda (cord) (build-path-segment! p cord))
+                      read)))        
+        p))
+
 (define-method build-path-segment! ((p <pattern>) sx sy ex ey)
   (set! (pattern-of p)
         (append (pattern-of p)
                 (if (null? (pattern-of p))
                     (bresenham sx sy ex ey)
                     (cdr (bresenham sx sy ex ey))))))
+
+(define-method build-path-segment! ((p <pattern>) (cp <pair>))
+  (build-path-segment!
+   p
+   (car (car cp)) (cdr (car cp))
+   (car (cadr cp)) (cdr (cadr cp))))
 
 (define-method normalize! ((p <pattern>))
   (let ((sx (car (find-min (pattern-of p) :key car)))        
